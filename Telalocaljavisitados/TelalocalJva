@@ -1,1 +1,86 @@
 
+package com.daedmemore.sistemadecompras;
+
+        import android.support.v7.app.AlertDialog;
+        import android.support.v7.app.AppCompatActivity;
+        import android.os.Bundle;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.CheckBox;
+        import android.widget.EditText;
+
+public class MainActivity extends AppCompatActivity {
+
+    CheckBox chkarroz,chkleite,chkcarne,chkfeijao;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        chkarroz = (CheckBox) findViewById(R.id.chkarroz);
+        chkleite= (CheckBox) findViewById(R.id.chkleite);
+        chkcarne= (CheckBox) findViewById(R.id.chkcarne);
+        chkfeijao= (CheckBox) findViewById(R.id.chkfeijao);
+        final EditText txtArroz = (EditText) findViewById(R.id.txtArroz);
+        final EditText txtleite = (EditText) findViewById(R.id.txtleite);
+        final EditText txtcarne = (EditText) findViewById(R.id.txtcarne);
+        final EditText txtfeijao = (EditText) findViewById(R.id.txtfeijao);
+
+        Button btotal = (Button) findViewById(R.id.btotal);
+
+        btotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                double total=0,arroz=0,leite =0,carne=0,feijao=0;
+
+                arroz = Double.parseDouble(txtArroz.getText().toString());
+                leite = Double.parseDouble(txtleite.getText().toString());
+                carne = Double.parseDouble(txtcarne.getText().toString());
+                feijao = Double.parseDouble(txtfeijao.getText().toString());
+
+
+                if (chkarroz.isChecked() && txtArroz.getText().length()>=0)
+                {
+                    total += (arroz*2.69);
+                }
+                else{
+                    txtArroz.setError("Favor digitar o valor");
+                    txtArroz.requestFocus();
+                }
+
+                if (chkleite.isChecked()&& txtleite.getText().length()>=0) {
+                    total += (leite * 5.00);
+                }
+                else{
+                    txtleite.setError("Favor digitar o valor");
+                    txtleite.requestFocus();
+                }
+
+                if (chkcarne.isChecked()&& txtcarne.getText().length()>=0) {
+                    total += (carne * 9.7);
+
+                }
+                else{
+                    txtcarne.setError("Favor digitar o valor");
+                    txtcarne.requestFocus();
+                }
+                if (chkfeijao.isChecked()&& txtfeijao.getText().length()>=0) {
+                    total += (feijao * 2.30);
+
+                }
+
+                else{
+                    txtfeijao.setError("Favor digitar o valor");
+                    txtfeijao.requestFocus();
+                }
+
+                AlertDialog.Builder dialogo = new AlertDialog.Builder(MainActivity.this);
+                dialogo.setTitle("Aviso"); //defino o titulo
+                dialogo.setMessage("Valor total da compra :" + String.valueOf(total)); //colocando a mensagem que vai ter dentro do dialog
+                dialogo.setNeutralButton("OK", null);//adicionando o botão de ok
+                dialogo.show();//mostrando o dialog
+            }
+        });
+    }
+}
