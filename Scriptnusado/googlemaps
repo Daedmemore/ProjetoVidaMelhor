@@ -1,0 +1,116 @@
+Primeiros passos
+
+Este é um guia de início rápido para adicionar um mapa a um aplicativo Android. O Android Studio é o ambiente de desenvolvimento recomendado para criar um aplicativo com a Google Maps Android API.
+
+Etapa 1. Baixar o Android Studio
+
+Siga os guias para baixar e instalar o Android Studio.
+
+Etapa 2. Instalar o SDK do Google Play Services
+
+Adicione o pacote do Google Play Services ao Android Studio.
+
+Etapa 3. Criar um projeto do Google Maps
+
+Siga estas etapas para criar um novo projeto de aplicativo, incluindo uma atividade de mapa:
+
+Inicie o Android Studio.
+Crie um novo projeto:
+
+Se a caixa de diálogo Welcome to Android Studio for exibido, selecione Start a new Android Studio project, disponível em "Quick Start" no lado direito da caixa de diálogo.
+Caso contrário, clique em File na barra de menus do Android Studio, em New e em New Project.
+Insira o nome do aplicativo, o domínio da empresa e a localização do projeto, como solicitado. Clique em Next.
+Selecione os fatores de forma necessários para o aplicativo. Se não tiver certeza do que é necessário, selecione Phone and Tablet. Clique em Next.
+Selecione Google Maps Activity na caixa de diálogo 'Add an activity to Mobile'. Clique em Next.
+Insira o nome da atividade, o nome do layout e o título, conforme solicitado. Os valores padrão são adequados. Clique em Finish.
+O Android Studio inicia o Gradle e cria o projeto. Isso pode demorar alguns segundos. Para obter mais informações sobre a criação de um projeto no Android Studio, consulte a documentação do Android Studio.
+
+Quando a criação é concluída, o Android Studio abre os arquivos google_maps_api.xml e MapsActivity.java no editor. (Observe que a atividade pode ter um nome diferente, mas será a atividade configurada durante a instalação.) Observe que o arquivo google_maps_api.xml contém instruções para obter uma chave da Google Maps API antes de tentar executar o aplicativo. A próxima seção descreve em mais detalhes como obter a chave de API.
+
+
+Etapa 4. Obter uma chave da Google Maps API
+
+O aplicativo precisa de uma chave de API para acessar os servidores do Google Maps. O tipo de chave necessária é uma chave de API com restrição a aplicativos Android. A chave é gratuita. Você pode usá-la com qualquer aplicativo que chama a Google Maps Android API. A chave permite um número ilimitado de usuários.
+
+Escolha uma das maneiras a seguir para obter a chave de API no Android Studio:
+
+A maneira fácil e rápida: Use o link fornecido no arquivo google_maps_api.xml que o Android Studio criou para você:
+Copie o link fornecido no arquivo google_maps_api.xml e cole no navegador. O link leva você ao Google API Console e fornece as informações necessárias ao Google API Console por meio de parâmetros de URL, reduzindo assim a necessidade de inserção manual.
+Siga as instruções para criar um novo projeto no Google API Console ou selecione um projeto existente.
+Crie uma chave de API restrita ao Android para o seu projeto.
+Copie a chave de API gerada, volte ao Android Studio e cole-a no elemento <string> do arquivo google_maps_api.xml.
+Uma maneira que demora um pouco mais: Use as credenciais presentes no arquivo google_maps_api.xml que o Android Studio criou para você:
+Copie as credenciais presentes no arquivo google_maps_api.xml.
+Acesse o Google API Console no navegador.
+Use as credenciais copiadas para adicionar o aplicativo a uma chave de API ou criar uma nova chave de API.
+O processo completo para obter uma chave de API: se nenhuma das opções acima funcionar para a sua situação, siga o processo completo.
+Etapa 5. Hello Map! Examinar o código
+
+Examine o código fornecido no modelo. Especificamente, examine os arquivos a seguir no projeto do Android Studio.
+
+O arquivo de layout XML
+
+Por padrão, o arquivo XML que define o layout do aplicativo está em res/layout/activity_maps.xml. Esse arquivo contém o seguinte código:
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/map"
+    tools:context=".MapsActivity"
+    android:name="com.google.android.gms.maps.SupportMapFragment" />
+O arquivo Java de atividades de mapa
+
+Por padrão, o arquivo Java que define a atividade dos mapas é denominado MapsActivity.java. Esse arquivo contém o seguinte código após o nome do pacote:
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private GoogleMap mMap;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney, Australia, and move the camera.
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+}
+Se o arquivo de atividade de mapas não contém o código acima, substitua o conteúdo do arquivo com esse código, após o nome do pacote.
+
+Etapa 6. Conectar um dispositivo Android
+
+A maneira mais simples de ver o aplicativo em ação é conectar um dispositivo Android ao seu computador. Siga as instruções para ativar as opções de desenvolvedor no dispositivo Android e configurar o aplicativo e o sistema para detectar o dispositivo.
+
+Como alternativa, use o Android Emulator para executar o aplicativo. Use o Android Virtual Device (AVD) Manager para configurar um ou mais dispositivos virtuais para usar com o Android Emulator quando você criar e executar o aplicativo. Ao escolher um emulador, não deixe de usar o Android 4.2.2 ou posterior e tenha cuidado para escolher uma imagem que vincula as Google APIs. Caso contrário, o aplicativo não terá as APIs de tempo de execução necessárias para a execução. Além disso, anote as instruções para configurar a aceleração de máquinas virtuais e use-as com um AVD de destino x86, como descrito nas instruções. Isso aprimorará a experiência com o emulador.
+
+Etapa 7. Compilar e executar o aplicativo
+
+No Android Studio, clique na opção de menu Run (ou no ícone do botão Play) para executar o aplicativo.
+
+Quando solicitado a escolher um dispositivo, selecione uma das seguintes opções:
+
+Selecione o dispositivo Android conectado ao computador.
+Como alternativa, selecione o botão de opção Launch emulator e escolha o dispositivo virtual configurado anteriormente.
+Clique em OK. O Android Studio invoca o Gradle para compilar o aplicativo e exibe os resultados no dispositivo ou no emulador. A abertura do aplicativo pode demorar alguns minutos.
+
+Será exibido um mapa com um marcador posicionado em Sidnei, Austrália. Se o mapa não for exibido, confirme a conclusão de todas as etapas descritas nesta página. Especificamente, verifique se adicionou uma chave de API como descrito acima.
